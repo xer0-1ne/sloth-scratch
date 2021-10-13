@@ -1,2 +1,2 @@
 # sloth-scratch
-A Small Python/Bottle and JavaScript project to store and recall various commands for *Nix and DOS.
+A Small Python/Bottle and JavaScript project to store and recall various commands for/from bash, linux, command prompt and power shell.  USeful for storing commands with specific arguments that might be unique to you or your environment.
