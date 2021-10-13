@@ -1,0 +1,84 @@
+@font-face {
+    font-family: Nunito-Regular;
+    src: url('../fonts/Nunito-Regular.ttf');
+}
+
+@font-face {
+    font-family: Nunito-Bold;
+    src: url('../fonts/Nunito-Bold.ttf');
+}
+
+@font-face {
+    font-family: Nunito-ExtraLight;
+    src: url('../fonts/Nunito-ExtraLight.ttf');
+}
+
+@font-face {
+    font-family: Nunito-Light;
+    src: url('../fonts/Nunito-Light.ttf');
+}
+
+.align-top {
+    vertical-align: top;
+    align-items: top;
+}
+
+.button-main {
+    border: 0px !important;
+    border-color: transparent !important;
+    size: 200% !important;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.center {
+    margin: auto;
+    vertical-align: middle;
+    align-items: center;
+}
+
+.form {
+    display: flex !important;
+    flex-direction: row !important;
+}
+
+.headerText {
+    font-family: "Nunito-ExtraLight";
+}
+
+.mt10 {
+    margin-top: 10% !important;
+}
+
+.mt10p {
+    margin-top: 10px !important;
+}
+
+.mt30p {
+    margin-top: 30px !important;
+}
+
+.mt25 {
+    margin-top: 25% !important;
+}
+
+.m-auto {
+    margin: auto !important;
+}
+
+.w100p {
+    width: 100% !important;
+}
+
+.searchBar {
+    width: 100% !important;
+    height: 40px !important;
+    font-size: 1.8em !important;
+    padding: 10px 15px 10px 15px !important;
+    border: none !important;
+    border-radius: 100px !important;
+    outline: none !important;
+    box-shadow: 0px 3px 8px #ddd !important;
+}

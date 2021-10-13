@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Sloth Scratch</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="stylesheet" href="assets/css/skeleton.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body style="background-color: white;" onload="getCommands();">
+  <div class="container center center-text">
+
+    <!-- columnArea -->
+    <div class="row" id="columnocation">
+      <div class="mt10">
+        <img src="assets/svg/sloth-logo.svg" width="15%" height="15%">
+        <h1 class="columnext">sloth scratch</h1>
+        <h6 style="font-style: italic;">because sloths spend a lot of time scratching their damp, moldy, and bug infested fur.</h6>
+
+      </div>
+    </div>
+    
+    <!-- Button Area -->
+    <div class="row mt30p" id="buttonLocation">
+      <button type="submit" class="button button-main" onclick="toggleTable();">
+        <img src="assets/svg/search.svg" class="center" >
+      </button>
+
+      <button type="submit" class="button button-main">
+        <img src="assets/svg/plus.svg" class="center" onclick="toggleAddCommand();" >
+      </button>
+    </div>
+
+    <!-- Search Area -->
+    <div class="m-auto" id="searchArea">
+      <!-- Search Bar -->
+      <div class="row" id="searchLocation">
+        <input type="search" id="searchBar" onkeyup="updateSearch(this.value);" placeholder="Search" class="searchBar" />
+      </div>
+
+      <!-- Table Area -->
+      <div class="row m-auto">
+        <p id="tableLocation"><table class="m-auto" id="table"></table>
+      </div>
+    </div>
+
+    <!-- Add Command Area -->
+    <div class="row fade" id="addCommandArea" hidden>
+      <form method="post" action="/addcommand"> 
+        <table class="w100p m-auto" style="width: 100%;">
+          <tr>
+            <th>Add Command</th>
+          </tr>
+          <tr>
+            <td>
+              <input name="newCommand" id="newCommand" type="text" style="border: hidden; width: 100%;" placeholder="Type Command" required>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="newCommandName" id="newCommandName" type="text" style="border: hidden; width: 100%;" placeholder="Type Name" required>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="newCommandOS" id="newCommandOS" type="text" style="border: hidden; width: 100%;" placeholder="Type Operating System" required>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <textarea name="newCommandDescription" id="newCommandDescription" type="text" rows="3" style="border: hidden; width: 100%;" placeholder="Type Description" required></textarea>
+            </td>
+          </tr>
+        </table>
+        <button type="submit" class="button mt30p" onclick="">Add Command</button>
+        </form>
+    </div>
+
+  </div> <!-- End container -->
+</body>
+</html>
+
+<script>
+//json object storage
+let data, value = null;
+
+//load commands.json for the table
+function getCommands() {
+
+  var ajax = new XMLHttpRequest();
+  ajax.open('GET', '/commands', true);
+  ajax.setRequestHeader("Content-Type", "application/json");
+
+  ajax.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      data = JSON.parse(ajax.response);
+
+      upsertTable("");
+
+    }
+  }
+  ajax.send();
+}
+
+function updateSearch(searchCriteria) {
+
+  value = searchCriteria;
+
+  upsertTable(value);
+  toggleTable(value);
+  filterTable();
+}
+
+function upsertTable(searchCriteria) {
+
+
+
+  var commands = data;  
+  var column = [];
+
+  for (var i = 0; i < commands.length; i++) {
+    for (var key in commands[i]) {
+      if (column.indexOf(key) === -1) {
+        column.push(key);
+      }
+    }
+  }
+
+  var table = document.createElement("table");
+  table.setAttribute("id", "table");
+  table.style.width = "95%";
+
+  var tr = table.insertRow(-1);
+
+  for (var i = 0; i < column.length; i++) {
+    var th = document.createElement("th");
+    th.innerHTML=column[i];
+    tr.appendChild(th);
+  }
+
+  for (var i = 0; i < commands.length; i++) {
+    tr = table.insertRow(-1);
+
+    for (var j = 0; j < column.length; j++) {
+      var tableCell = tr.insertCell(-1);
+      tableCell.innerHTML=commands[i][column[j]]
+      if (j == 0) {
+        tableCell.style.fontFamily = 'Courier New';
+      }
+    }
+  }
+  if (document.getElementById("tableLocation") != null) {
+    document.getElementById("tableLocation").replaceWith(table);
+
+  }
+}
+
+//check if search box is populated or not and display table if it has text
+function toggleTable(value) {
+  searchBar = document.getElementById("searchBar");
+  table = document.getElementById("table");
+
+  if (value == "") {
+    table.hidden = true;
+  } else {
+    table.hidden = false;
+  }
+}
+
+function filterTable() {
+
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("searchBar");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("table");
+  tr = table.getElementsByTagName("tr");
+
+  for (i = 0; i < tr.length; i++) {
+
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+
+      txtValue = td.textContent || td.innerText;
+
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  } 
+}
+
+function addCommand() {
+
+  var command = document.getElementById("newCommand").value;
+  var commandName = document.getElementById("newCommandName").value; 
+  var commandOS = document.getElementById("newCommandOS").value;
+  var commandDescription = document.getElementById("newCommandDescription").value;
+
+  var obj = [];
+
+  console.log(obj);
+}
+
+function toggleAddCommand() {
+  document.getElementById("searchArea").hidden = true;
+  document.getElementById("addCommandArea").hidden = false;
+
+}
+
+function toggleTable() {
+  document.getElementById("searchArea").hidden = false;
+  document.getElementById("addCommandArea").hidden = true;
+
+}
+
+</script>
